@@ -6,7 +6,10 @@ from aesthetic import aesthetic_image
 
 app = FastAPI()
 
-# CORS
+@app.get("/")
+def home():
+    return {"status": "running"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
