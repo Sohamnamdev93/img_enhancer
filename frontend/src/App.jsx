@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+const API_URL = "https://imgenhancer-production.up.railway.app";
+
 function App() {
 
   const [file, setFile] = useState(null);
@@ -8,7 +10,6 @@ function App() {
   const [result, setResult] = useState(null);
 
   const processImage = async (type) => {
-
     if (!file) {
       alert("Please select an image first");
       return;
@@ -16,29 +17,25 @@ function App() {
 
     const formData = new FormData();
     formData.append("file", file);
-    try {
 
+    try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/${type}`,
+        `${API_URL}/${type}`,
         formData,
         {
-          responseType: "blob"
+          responseType: "blob",
         }
       );
 
-      const imageUrl = URL.createObjectURL(
-        response.data
-      );
-
+      const imageUrl = URL.createObjectURL(response.data);
       setResult(imageUrl);
 
     } catch (error) {
-
-      console.log(error);
-
+      console.error(error);
+      alert("Processing failed");
     }
-
   };
+
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
